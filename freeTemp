@@ -1,0 +1,8 @@
+http://www.cnblogs.com/luorende/p/5911008.html
+./cocos.py new HelloWorldDemo -p com.coco2dx.org -l cpp -d ~/Desktop
+
+Лђеп
+
+python cocos.py new HelloWorldDemo -p com.coco2dx.org -l cpp -d ~/Desktop
+
+https://www.coursera.org/learn/algorithms-part1/lecture/buZPh/course-introduction
