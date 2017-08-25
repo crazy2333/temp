@@ -5,7 +5,7 @@
 
 
 #define myoutput {printf("%x ",a);printf("%x ",b);printf("%x ",c);printf("%x ",d);\
-printf("%x ",e);printf("%x ",f);printf("%x ",g);printf("%x\n",h);}
+printf("%x ",e);printf("%x ",f);printf("%x ",g);printf("%x ",h);}
 
 
 
@@ -16,6 +16,7 @@ using namespace std;
 namespace sha256
 {
 uint32_t inline Ch(uint32_t x, uint32_t y, uint32_t z) { return z ^ (x & (y ^ z)); }
+//uint32_t inline Ch(uint32_t x, uint32_t y, uint32_t z) { return (x&y)^((~x)&z); }
 uint32_t inline Maj(uint32_t x, uint32_t y, uint32_t z) { return (x & y) | (z & (x | y)); }
 uint32_t inline Sigma0(uint32_t x) { return (x >> 2 | x << 30) ^ (x >> 13 | x << 19) ^ (x >> 22 | x << 10); }
 uint32_t inline Sigma1(uint32_t x) { return (x >> 6 | x << 26) ^ (x >> 11 | x << 21) ^ (x >> 25 | x << 7); }
@@ -26,10 +27,13 @@ uint32_t inline sigma1(uint32_t x) { return (x >> 17 | x << 15) ^ (x >> 19 | x <
 void inline Round(uint32_t a, uint32_t b, uint32_t c, uint32_t& d, uint32_t e, uint32_t f, uint32_t g, uint32_t& h, uint32_t k, uint32_t w)
 {
 
-    myoutput
+//    myoutput
 
     uint32_t t1 = h + Sigma1(e) + Ch(e, f, g) + k + w;
     uint32_t t2 = Sigma0(a) + Maj(a, b, c);
+    
+//    printf("t1:%X w:%X\n",t1,w);
+    
     d += t1;
     h = t1 + t2;
 }
@@ -47,11 +51,14 @@ void inline Initialize(uint32_t* s)
     s[7] = 0x5be0cd19ul;
 }
 
-uint32_t static inline ReadBE32(const unsigned char* ptr)
+//char[4]->32位int
+uint32_t inline ReadBE32(const unsigned char* ptr)
 {
-    uint32_t x;
-    memcpy((char*)&x, ptr, 4);
-    return x;
+//    uint32_t x;
+//    memcpy((unsigned char*)&x, ptr, 4);
+//    return x;
+    
+    return (ptr[0]<<24)|(ptr[1]<<16)|(ptr[2]<<8)|(ptr[3]);
 }
 
 /** Perform a number of SHA-256 transformations, processing 64-byte chunks. */
@@ -129,7 +136,7 @@ void Transform(uint32_t* s, const unsigned char* chunk, size_t blocks)
         Round(c, d, e, f, g, h, a, b, 0xbef9a3f7, w14 + sigma1(w12) + w7 + sigma0(w15));
         Round(b, c, d, e, f, g, h, a, 0xc67178f2, w15 + sigma1(w13) + w8 + sigma0(w0));
 
-        myoutput
+//        myoutput
 
         s[0] += a;
         s[1] += b;
